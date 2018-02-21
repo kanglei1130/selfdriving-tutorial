@@ -68,6 +68,18 @@ void creatDir(string file_path){
 	}
 }
 
+/* Computes Mean Square Error between two n-d matrices.*/
+/* Lower value means more similar*/
+static double meanSquareError(const Mat &img1, const Mat &img2) {
+    Mat s1;
+    absdiff(img1, img2, s1);   // |img1 - img2|
+    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+    s1 = s1.mul(s1);           // |img1 - img2|^2
+    Scalar s = sum(s1);        // sum elements per channel
+    double sse = s.val[0] + s.val[1] + s.val[2];  // sum channels
+    double mse = sse / (double)(img1.channels() * img1.total());
+    return mse;
+}
 
 /*Detect stop sign with simple method by comparing MSE*/
 void detectStopSignMSE(string obj_address, string model_address) {
@@ -141,18 +153,7 @@ void detectStopSignMSE(string obj_address, string model_address) {
     waitKey(50000);
 }
 
-/* Computes Mean Square Error between two n-d matrices.*/
-/* Lower value means more similar*/
-static double meanSquareError(const Mat &img1, const Mat &img2) {
-    Mat s1;
-    absdiff(img1, img2, s1);   // |img1 - img2|
-    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
-    s1 = s1.mul(s1);           // |img1 - img2|^2
-    Scalar s = sum(s1);        // sum elements per channel
-    double sse = s.val[0] + s.val[1] + s.val[2];  // sum channels
-    double mse = sse / (double)(img1.channels() * img1.total());
-    return mse;
-}
+
 
 
 /*use cascade(boosting) to detect object*/

@@ -1,7 +1,22 @@
 #ifndef HEADERS_H_
 #define HEADERS_H_
 
+/* OpenCV Headers*/
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
+/* Local directory Headers*/
+// #define WINDOWS  /* uncomment this line to use it for windows.*/
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
 //#define _GNU_SOURCE
 
 /*General C Headers*/
@@ -50,15 +65,20 @@
 #include <thread>
 #include <mutex>    
 
-/////////////////////////////
-#include <gst/gst.h>
+/*General Headers used in this project (backup)*/
+/*
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <time.h>
+#include <map>
+#include <string>
+*/
 
-using namespace std;
-using namespace std::chrono;
+//using namespace std;
+//using namespace std::chrono;
 
-static inline uint64_t currentTimeMillis() {
-	return chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
-}
 
 #endif
 

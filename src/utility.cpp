@@ -8,10 +8,6 @@
 
 namespace utility {
 
-
-
-
-
 int getRandomNumber() {
   return uint_dist100(randomNumberGenerator);
 }

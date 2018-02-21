@@ -31,6 +31,10 @@ static std::random_device rd;
 static std::mt19937 randomNumberGenerator(rd());  
 static std::uniform_int_distribution<uint32_t> uint_dist100(1,100);
 
+
+std::string GetCurrentWorkingDir();
+void creatDir(string file_path);
+
 int getRandomNumber();
 
 

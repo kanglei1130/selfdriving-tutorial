@@ -8,6 +8,27 @@
 
 namespace utility {
 
+
+//get the local file path
+std::string GetCurrentWorkingDir() {
+  char buff[FILENAME_MAX];
+  GetCurrentDir( buff, FILENAME_MAX );
+  std::string current_working_dir(buff);
+  return current_working_dir;
+}
+
+//creat a new directory with name file_path
+void creatDir(string file_path){
+	std::string dir = "mkdir -p " + GetCurrentWorkingDir() + file_path;
+	const int dir_err = system(dir.c_str());
+	if (-1 == dir_err)
+	{
+	    printf("Error creating directory!n");
+	    exit(1);
+	}
+}
+
+
 int getRandomNumber() {
   return uint_dist100(randomNumberGenerator);
 }

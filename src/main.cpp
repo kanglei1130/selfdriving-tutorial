@@ -10,11 +10,6 @@ void inversePerspectiveMapping(Mat& input, Mat& output);
 void processVideo();
 int changePixelColor();
 void videoQuality(string rawVideo, string lossVideo);
-//void creatDir(string file_path);
-//string GetCurrentWorkingDir();
-//void detectStopSignMSE(string obj_address,string model_address);
-//void detectObjCascade(string file_name,string folder_name);
-//void draw_locations(Mat & img, vector< Rect > & locations, const Scalar & color,string text);
 
 /*All data sets of images file_path*/
 string train_stopSign_positive = utility::GetCurrentWorkingDir() + "/dataset/train/positive_stop/";
@@ -33,20 +28,27 @@ string stopPrototype = utility::GetCurrentWorkingDir() + "/dataset/train/stopPro
 
 int main( int argc, char** argv )
 {
+
+	/*Read all images from one folder*/
+	vector<string> fileNameList = utility::GetFileName(test_stopSign_positive);
+	for (vector<string>::const_iterator i = fileNameList.begin(); i != fileNameList.end(); ++i){
+	    cout << *i << ' ';
+	}
+
 	/*Basic method (MSE) to detect objects*/
-	//detectStopSignMSE::detectStopSignMSE(stopPrototype,test_stopSign_positive,"3.jpg");
+	for (int i = 0; i < fileNameList.size(); i++){
+		detectStopSignMSE::detectStopSignMSE(stopPrototype,test_stopSign_positive,fileNameList[i]);
+	}
 
 	/*Advanced method (cascade) to detect objects*/
-	string file_name = string("5.jpg");
-	detectObjCascade::detectObjCascade(file_name, test_stopSign_positive);
+	for (int i = 0; i < fileNameList.size(); i++){
+		detectObjCascade::detectObjCascade(fileNameList[i], test_stopSign_positive);
+	}
 
 	/*Handle video file*/
 	//processVideo();
 
-	/*Read all images from one folder*/
-
-
-   return 0;
+	return 0;
 }
 
 void videoQuality(string rawVideo, string lossVideo) {

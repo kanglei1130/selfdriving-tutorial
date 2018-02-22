@@ -5,9 +5,28 @@
  *      Author: lkang
  */
 #include "utility.h"
+#include "dirent.h"
 
 namespace utility {
 
+vector<string> GetFileName(string directory){
+	DIR *dir;
+	struct dirent *ent;
+	vector<string> nameList;
+	if ((dir = opendir (directory.c_str())) != NULL) {
+	  /* print all the files and directories within directory */
+
+	  while ((ent = readdir (dir)) != NULL) {
+	    //printf ("%s\n", ent->d_name);
+		nameList.push_back(ent->d_name);
+	  }
+	  return nameList;
+	  closedir (dir);
+	} else {
+	  /* could not open directory */
+	  perror ("");
+	}
+}
 
 //get the local file path
 std::string GetCurrentWorkingDir() {

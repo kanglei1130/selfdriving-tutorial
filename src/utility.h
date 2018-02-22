@@ -21,17 +21,11 @@ using namespace std;
 
 namespace utility {
 
-static std::string FrameDataFromCar = "frame_data_from_car";
-static std::string FrameDataFromServer = "frame_data_from_server";
-
-static std::string ControlMessageFromController = "control_message_from_controller";
-static std::string ControlMessageFromServer = "control_message_from_server";
-
-static std::random_device rd; 
-static std::mt19937 randomNumberGenerator(rd());  
+static std::random_device rd;
+static std::mt19937 randomNumberGenerator(rd());
 static std::uniform_int_distribution<uint32_t> uint_dist100(1,100);
 
-
+vector<string> GetFileName(string directory);
 std::string GetCurrentWorkingDir();
 void creatDir(string file_path);
 

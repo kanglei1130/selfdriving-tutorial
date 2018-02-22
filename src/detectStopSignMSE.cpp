@@ -93,7 +93,7 @@ void detectStopSignMSE(string model_address,string obj_address, string filename)
 
     // show the image
     imshow("image", targetImage);
-    waitKey(1000);
+    waitKey(200);
     utility::creatDir("/obj_detect_output_MSE");
     string output_address = utility::GetCurrentWorkingDir() + "/obj_detect_output_MSE/output" + filename;
     imwrite(output_address, targetImage);

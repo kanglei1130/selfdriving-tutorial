@@ -21,7 +21,8 @@ void draw_locations(Mat & img, vector< Rect > &locations, const Scalar & color, 
 }
 
 /*use cascade(boosting) to detect object*/
-#define STOP_SIGN_CASCADE_NAME utility::GetCurrentWorkingDir() + "/params/cascade.xml"
+/*students are encouraged to try different parameter files, and also need to train you own parameter file*/
+#define STOP_SIGN_CASCADE_NAME utility::GetCurrentWorkingDir() + "/params/trained_stopsign_classifier.xml"
 //#define TRAFFIC_LIGHT_CASCADE_NAME GetCurrentWorkingDir() + "/params/trafficlight_classifier2.xml"
 
 void detectObjCascade(string file_name, string folder_name) {

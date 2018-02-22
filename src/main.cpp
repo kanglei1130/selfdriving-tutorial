@@ -26,6 +26,9 @@ string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/t
 
 string stopPrototype = utility::GetCurrentWorkingDir() + "/dataset/train/stopPrototype.png";//Prototype image
 
+/*Prototype images which are used for parameters training in command line using cascade */
+string stopPrototypeFolder = utility::GetCurrentWorkingDir() + "/dataset/train//croped_positive_stop/";
+
 int main( int argc, char** argv )
 {
 
@@ -50,6 +53,12 @@ int main( int argc, char** argv )
 
 	return 0;
 }
+
+
+
+
+
+
 
 void videoQuality(string rawVideo, string lossVideo) {
   VideoCapture raw(rawVideo.c_str());

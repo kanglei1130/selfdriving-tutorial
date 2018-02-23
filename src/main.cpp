@@ -18,11 +18,11 @@ string train_stopSign_negtive = utility::GetCurrentWorkingDir() + "/dataset/trai
 string test_stopSign_positive = utility::GetCurrentWorkingDir() + "/dataset/test/positive_stop/";
 string test_stopSign_negtive = utility::GetCurrentWorkingDir()+ "/dataset/test/negative_stop/";
 
-string train_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/train/positive_stop/";
-string train_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/train/negative_stop/";
+string train_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/train/positive_light/";
+string train_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/train/negative_light/";
 
-string test_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/test/positive_stop/";
-string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/test/negative_stop/";
+string test_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/test/positive_light/";
+string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/test/negative_light/";
 
 string stopPrototype = utility::GetCurrentWorkingDir() + "/dataset/train/stopPrototype.png";//Prototype image
 
@@ -33,19 +33,21 @@ int main( int argc, char** argv )
 {
 
 	/*Read all images from one folder*/
-	vector<string> fileNameList = utility::GetFileName(test_stopSign_positive);
+	vector<string> fileNameList = utility::GetFileName(test_trafficLight_positive);
+	/*Print the files names*/
 	for (vector<string>::const_iterator i = fileNameList.begin(); i != fileNameList.end(); ++i){
-	    cout << *i << ' ';
+	    cout <<"Read files name: "<< *i << ' ';
 	}
 
 	/*Basic method (MSE) to detect objects*/
-	for (int i = 0; i < fileNameList.size(); i++){
-		detectStopSignMSE::detectStopSignMSE(stopPrototype,test_stopSign_positive,fileNameList[i]);
-	}
+	//for (int i = 0; i < fileNameList.size(); i++){
+	//	detectStopSignMSE::detectStopSignMSE(stopPrototype,test_stopSign_positive,fileNameList[i]);
+	//}
 
 	/*Advanced method (cascade) to detect objects*/
 	for (int i = 0; i < fileNameList.size(); i++){
-		detectObjCascade::detectObjCascade(fileNameList[i], test_stopSign_positive);
+		cout<<fileNameList[i]<<endl;
+		detectObjCascade::detectObjCascade(fileNameList[i], test_trafficLight_positive);
 	}
 
 	/*Handle video file*/

@@ -23,7 +23,7 @@ void draw_locations(Mat & img, vector< Rect > &locations, const Scalar & color, 
 /*use cascade(boosting) to detect object*/
 /*students are encouraged to try different parameter files, and also need to train you own parameter file*/
 #define STOP_SIGN_CASCADE_NAME utility::GetCurrentWorkingDir() + "/params/trained_stopsign_classifier.xml"
-//#define TRAFFIC_LIGHT_CASCADE_NAME GetCurrentWorkingDir() + "/params/trafficlight_classifier2.xml"
+#define TRAFFIC_LIGHT_CASCADE_NAME utility::GetCurrentWorkingDir() + "/params/trafficlight_classifier2.xml"
 
 void detectObjCascade(string file_name, string folder_name) {
     cout << "OpenCV Version: " << CV_VERSION << endl;
@@ -38,25 +38,26 @@ void detectObjCascade(string file_name, string folder_name) {
     }
 
     cout<<utility::GetCurrentWorkingDir()<<endl;
-    //traffic_light.load(TRAFFIC_LIGHT_CASCADE_NAME);
+    traffic_light.load(TRAFFIC_LIGHT_CASCADE_NAME);
     stop_sign.load(STOP_SIGN_CASCADE_NAME);
 
     double t = (double) getTickCount(); // start time
 
-	//traffic_light.detectMultiScale(targetImage, traffic_light_found, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
+	traffic_light.detectMultiScale(targetImage, traffic_light_found, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
     stop_sign.detectMultiScale(targetImage, stop_sign_found, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
 
     t = (double) getTickCount() - t; // time duration
     cout << "Time taken : " << (t*1000./cv::getTickFrequency()) << " s" << endl;
 
-    // draw_locations(targetImage, cars_found, Scalar(0, 255, 0), "Car");
     draw_locations(targetImage, traffic_light_found, Scalar(0, 255, 255), "Traffic Light");
     draw_locations(targetImage, stop_sign_found, Scalar(0, 0, 255), "Stop Sign");
 
     utility::creatDir("/obj_detect_output_cascade");
     string output_address = utility::GetCurrentWorkingDir() + "/obj_detect_output_cascade/output" + file_name;
-    imwrite(output_address, targetImage);
-    cout << "Detected Images Locate: " << output_address << endl;
+    if (file_name.find(".jpg") and !targetImage.empty()){
+    	imwrite(output_address, targetImage);
+    }
+	cout << "Detected Images Locate: " << output_address << endl;
 }
 
 } /* namespace detectObjCascade */

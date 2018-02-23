@@ -5,6 +5,7 @@
  *      Author: wei
  */
 #include "headers.h"
+#include <stdlib.h>
 #ifndef SRC_DETECTOBJCASCADE_H_
 #define SRC_DETECTOBJCASCADE_H_
 

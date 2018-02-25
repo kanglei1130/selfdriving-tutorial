@@ -5,26 +5,26 @@ CVLIBS=$(shell pkg-config --libs opencv)
 
 DEBUGFLAGS = -g -w  #-DTEST 
 
-GSTREAMERFLAGS=$(shell pkg-config --cflags gstreamer-1.0)
-GSTREAMERLIBS=$(shell pkg-config --libs gstreamer-1.0)
+#GSTREAMERFLAGS=$(shell pkg-config --cflags gstreamer-1.0)
+#GSTREAMERLIBS=$(shell pkg-config --libs gstreamer-1.0)
 
-CXXFLAGS   = $(CVFLAGS) $(GSTREAMERFLAGS) $(DEBUGFLAGS)
+CXXFLAGS   = $(CVFLAGS) $(DEBUGFLAGS)
 CXXFLAGS += --std=c++11
 
 OTHERLIBS = -ljsoncpp -lpthread
 
-LIBS = $(CVLIBS) $(GSTREAMERLIBS) $(OTHERLIBS)
+LIBS = $(CVLIBS) $(OTHERLIBS)
 
 
 
-remote_control: ./src/main.o ./src/utility.o
-	$(CXX) $(CXXFLAGS) $^ -o remote_control $(LIBS)
+selfdriving: ./src/main.o ./src/utility.o ./src/object_detection.o
+	$(CXX) $(CXXFLAGS) $^ -o selfdriving $(LIBS)
 
 
 $(BUILD_DIR)%.o: ./src/%.cpp ./src/%.h
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 	
 clean:
-	rm remote_control ./src/*.o
+	rm selfdriving ./src/*.o
 	
 	

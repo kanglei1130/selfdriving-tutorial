@@ -3,7 +3,7 @@ CXX=g++
 CVFLAGS=$(shell pkg-config --cflags opencv)
 CVLIBS=$(shell pkg-config --libs opencv)
 
-DEBUGFLAGS = -g -w  #-DTEST 
+DEBUGFLAGS = -g -w   #-DTEST 
 
 #GSTREAMERFLAGS=$(shell pkg-config --cflags gstreamer-1.0)
 #GSTREAMERLIBS=$(shell pkg-config --libs gstreamer-1.0)
@@ -11,13 +11,13 @@ DEBUGFLAGS = -g -w  #-DTEST
 CXXFLAGS   = $(CVFLAGS) $(DEBUGFLAGS)
 CXXFLAGS += --std=c++11
 
-OTHERLIBS = -ljsoncpp -lpthread
+OTHERLIBS = 
 
 LIBS = $(CVLIBS) $(OTHERLIBS)
 
 
 
-selfdriving: ./src/main.o ./src/utility.o ./src/object_detection.o
+selfdriving: ./src/main.o ./src/utility.o ./src/object_detection.o ./src/geometry.o
 	$(CXX) $(CXXFLAGS) $^ -o selfdriving $(LIBS)
 
 

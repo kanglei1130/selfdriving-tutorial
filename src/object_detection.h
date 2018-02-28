@@ -14,12 +14,13 @@ using namespace std;
 
 namespace ObjectDetection {
 
+  vector<Rect> detectObject(const Mat& img, CascadeClassifier& classifer);
+
 	void draw_locations(Mat & img, vector< Rect > &locations, const Scalar & color, string text);
-	void detectObjCascade(string file_name, string folder_name);
+	bool detectObjCascade(const string& model, const string& folder, const string& file_name);
 
-	static double meanSquareError(const Mat &img1, const Mat &img2);
+	double meanSquareError(const Mat &img1, const Mat &img2);
 	void detectStopSignMSE(string model_address,string obj_address, string filename) ;
-
 
 } /* namespace detectObjCascade */
 

@@ -1,11 +1,9 @@
 # include <iostream>
 # include <stdlib.h>
-# include "utility.h"
+# include "geometry.h"
 using namespace std;
 
-
-namespace GEOMETRY {
-
+namespace Geometry {
 
 // given three colinear points p, q, r, the function checks if q lies on line segment 'pr'
 bool onSegment(Point p, Point q, Point r) {
@@ -20,7 +18,7 @@ bool onSegment(Point p, Point q, Point r) {
 // 1 --> clockwise
 // 2 --> counterclockwise
 int orientation(Point p, Point q, Point r) {
-    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+    double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
 
     if (val == 0) return 0;  // colinear
     return (val > 0)? 1: 2;  // clock or counterclock wise
@@ -58,18 +56,23 @@ bool doIntersect(Point p1, Point q1, Point p2, Point q2) {
 // change to vector<Point>
 bool isInside(vector<Point> polygon, Point p) {
     // there must be at least 3 vertices in polygon[]
-  int n = polygon.size();
-  if (n < 3)  return false;
+    int n = polygon.size();
+    if (n < 3)  return false;
 
     // get the MAX
+    double maxXCoordinate = -1;
+    for (int i = 0; i < n; i++) {
+        if (polygon[i].x > maxXCoordinate)
+            maxXCoordinate = polygon[i].x;
+    }
+
     // create a point for line segment from p to infinite
-#define INF 10000
-    Point extreme = {INF, p.y};
+    Point extreme = Point(maxXCoordinate + 1, p.y);
 
     // count intersections of the above line with sides of polygon
     int count = 0, i = 0;
     do {
-        int next = (i+1)%n;
+        int next = (i + 1) % n;
 
         // check if the line segment from 'p' to 'extreme' intersects
         // with the line segment from 'polygon[i]' to 'polygon[next]'
@@ -89,7 +92,7 @@ bool isInside(vector<Point> polygon, Point p) {
 }
 
 // returns true if x is between p and q
-bool between(int x, int p, int q) {
+bool between(double x, double p, double q) {
     if (p > q)
         return x >= q && x <= p;
     else
@@ -100,8 +103,8 @@ bool between(int x, int p, int q) {
 // this requires that the points in each polygon is in order (clockwise or anticlockwise)
 bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2) {
     // check whether there's vertices of one inside another
-  int n1 = polygon1.size();
-  int n2 = polygon2.size();
+    int n1 = polygon1.size();
+    int n2 = polygon2.size();
     for (int i = 0; i < n2; i++) {
         if (isInside(polygon1, polygon2[i])) {
             return true;
@@ -145,8 +148,4 @@ bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2) {
     // there's no intersection & there's no completely cover
     return false;
 }
-
-
 }
-
-

@@ -29,8 +29,7 @@ string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/t
 void cascadeRoutine(const string& folder);
 void geometryRoutine();
 
-int main( int argc, char** argv )
-{
+int main( int argc, char** argv ) {
   cout<<"Hello Self-Driving Tutorial"<<endl;
   cout << "OpenCV Version: " << CV_VERSION << endl;
 
@@ -38,43 +37,34 @@ int main( int argc, char** argv )
 
   geometryRoutine();
 
-	return 0;
+  return 0;
 }
 
 void geometryRoutine() {
-  /*
-  int numVertices = 0;
-   vector<Point> vertices;
-     if (argc > 1) {
-         numVertices = (argc - 1) / 2;
-         for (int i = 0; i < numVertices; i++) {
-             vertices[i].x = atoi(argv[i*2 + 1]);
-             vertices[i].y = atoi(argv[i*2 + 2]);
-         }
-     } else {
-         cout << "How many vertices does the polygon have?" << endl;
-         cin >> numVertices;
-         vertices = new Point[numVertices];
-         for (int i = 0; i < numVertices; i++) {
-             cout << "Enter the x coordinate of vertex " << i << ": ";
-             cin >> vertices[i].x;
-             cout << "Enter the y coordinate of vertex " << i << ": ";
-             cin >> vertices[i].y;
-         }
+    int numVertices = 0;
+    vector<Point> vertices;
+    cout << "How many vertices does the polygon have?" << endl;
+    cin >> numVertices;
+    for (int i = 0; i < numVertices; i++) {
+        double x, y;
+        cout << "Enter the x coordinate of vertex " << i << ": ";
+        cin >> x;
+        cout << "Enter the y coordinate of vertex " << i << ": ";
+        cin >> y;
+        vertices.push_back(Point(x, y));
      }
 
      int numTest;
-     Point p;
      cout << "How many points do you want to test?" << endl;
      cin >> numTest;
      for (int i = 0; i < numTest; i++) {
+         double x, y;
          cout << "Enter the x coordinate of point " << i << ": ";
-         cin >> p.x;
+         cin >> x;
          cout << "Enter the y coordinate of point " << i << ": ";
-         cin >> p.y;
-         Geometry::isInside(vertices, numVertices, p)? cout << "Yes \n": cout << "No \n";
+         cin >> y;
+         Geometry::isInside(vertices, Point(x, y))? cout << "Yes \n": cout << "No \n";
      }
-     */
 }
 
 

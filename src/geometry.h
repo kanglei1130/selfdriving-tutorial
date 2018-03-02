@@ -8,11 +8,10 @@
 #ifndef SRC_GEOMETRY_H_
 #define SRC_GEOMETRY_H_
 
-namespace GEOMETRY {
+#include "utility.h"
 
-  bool isInside(vector<Point> polygon, Point p);
-
+namespace Geometry {
+    bool isInside(vector<Point> polygon, Point p);
 }
-
 
 #endif /* SRC_GEOMETRY_H_ */

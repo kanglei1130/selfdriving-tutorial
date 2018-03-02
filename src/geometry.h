@@ -12,6 +12,7 @@
 
 namespace Geometry {
     bool isInside(vector<Point> polygon, Point p);
+    bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2);
 }
 
 #endif /* SRC_GEOMETRY_H_ */

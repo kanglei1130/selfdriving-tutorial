@@ -27,7 +27,7 @@ string test_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/
 string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/test/negative_light/";
 
 void cascadeRoutine(const string& folder);
-void geometryRoutine();
+void geometryRoutine(string command, string address);
 
 int main( int argc, char** argv ) {
   cout<<"Hello Self-Driving Tutorial"<<endl;
@@ -35,38 +35,73 @@ int main( int argc, char** argv ) {
 
   // cascadeRoutine(test_stopSign_positive);
 
-  geometryRoutine();
+  // geometryRoutine("point-polygon", "testcases/geometry/test_point_polygon_0.txt");
+  geometryRoutine("polygon-polygon", "testcases/geometry/test_polygon_polygon_0.txt");
 
   return 0;
 }
 
-void geometryRoutine() {
+// command: point-polygon / polygon-polygon
+// address: input file address
+void geometryRoutine(string command, string address) {
+  if (command == "point-polygon") {
     int numVertices = 0;
     vector<Point> vertices;
-    cout << "How many vertices does the polygon have?" << endl;
-    cin >> numVertices;
+    ifstream inFile;
+    inFile.open(address);
+    // cout << "How many vertices does the polygon have?" << endl;
+    inFile >> numVertices;
     for (int i = 0; i < numVertices; i++) {
         double x, y;
-        cout << "Enter the x coordinate of vertex " << i << ": ";
-        cin >> x;
-        cout << "Enter the y coordinate of vertex " << i << ": ";
-        cin >> y;
+        // cout << "Enter the x coordinate of vertex " << i << ": ";
+        inFile >> x;
+        // cout << "Enter the y coordinate of vertex " << i << ": ";
+        inFile >> y;
         vertices.push_back(Point(x, y));
-     }
+    }
 
-     int numTest;
-     cout << "How many points do you want to test?" << endl;
-     cin >> numTest;
-     for (int i = 0; i < numTest; i++) {
-         double x, y;
-         cout << "Enter the x coordinate of point " << i << ": ";
-         cin >> x;
-         cout << "Enter the y coordinate of point " << i << ": ";
-         cin >> y;
-         Geometry::isInside(vertices, Point(x, y))? cout << "Yes \n": cout << "No \n";
-     }
+    int numTest;
+    // cout << "How many points do you want to test?" << endl;
+    inFile >> numTest;
+    for (int i = 0; i < numTest; i++) {
+        double x, y;
+        // cout << "Enter the x coordinate of point " << i << ": ";
+        inFile >> x;
+        // cout << "Enter the y coordinate of point " << i << ": ";
+        inFile >> y;
+        Geometry::isInside(vertices, Point(x, y))? cout << "Yes \n": cout << "No \n";
+    }
+  } else {
+    int numVertices = 0;
+    vector<Point> vertices1;
+    vector<Point> vertices2;
+    ifstream inFile;
+    inFile.open(address);
+    cout << address << endl;
+    // cout << "How many vertices does the polygon have?" << endl;
+    inFile >> numVertices;
+    for (int i = 0; i < numVertices; i++) {
+        double x, y;
+        // cout << "Enter the x coordinate of vertex " << i + 1 << ": ";
+        inFile >> x;
+        // cout << "Enter the y coordinate of vertex " << i + 1 << ": ";
+        inFile >> y;
+        vertices1.push_back(Point(x, y));
+    }
+
+    // cout << "How many vertices does the second one have?" << endl;
+    inFile >> numVertices;
+    for (int i = 0; i < numVertices; i++) {
+        double x, y;
+        // cout << "Enter the x coordinate of vertice " << i + 1 << ": ";
+        inFile >> x;
+        // cout << "Enter the y coordinate of vertice " << i + 1 << ": ";
+        inFile >> y;
+        vertices2.push_back(Point(x, y));
+    }
+    Geometry::hasOverlap(vertices1, vertices2)? cout << "Yes \n": cout << "No \n"; 
+  }
 }
-
 
 void cascadeRoutine(const string& folder) {
   vector<string> fileNameList = utility::GetFileName(folder);

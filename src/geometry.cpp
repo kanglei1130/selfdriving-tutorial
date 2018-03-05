@@ -148,4 +148,44 @@ bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2) {
     // there's no intersection & there's no completely cover
     return false;
 }
+
+// prints convex hull of a set of n points - Javis' Algorithm
+vector<Point> convexHull(vector<Point> points) {
+    int n = points.size();
+    vector<Point> hull;
+    if (n < 3) return hull;
+ 
+    // find the leftmost point
+    int l = 0;
+    for (int i = 1; i < n; i++)
+        if (points[i].x < points[l].x)
+            l = i;
+ 
+    // start from leftmost point, keep moving counterclockwise
+    // until reach the start point again.  This loop runs O(h)
+    // where h is number of points in result or output.
+    int p = l, q;
+    do {
+        // add current point to result
+        hull.push_back(points[p]);
+ 
+        // search for a point 'q' such that orientation(p, x, q) 
+        // is counterclockwise for all points 'x'. The idea
+        // is to keep track of last visited most counterclock-
+        // wise point in q.
+        q = (p + 1) % n;
+        for (int i = 0; i < n; i++) {
+           // If i is more counterclockwise than current q, then
+           // update q
+           if (orientation(points[p], points[i], points[q]) == 2)
+               q = i;
+        }
+ 
+        // q is the most counterclockwise with respect to p
+        // set p as q for next iteration
+        p = q;
+    } while (p != l);  // while we don't come back to first point
+ 
+    return hull;
+}
 }

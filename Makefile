@@ -17,7 +17,7 @@ LIBS = $(CVLIBS) $(OTHERLIBS)
 
 
 
-selfdriving: ./src/main.o ./src/utility.o ./src/object_detection.o ./src/geometry.o
+selfdriving: ./src/main.o ./src/utility.o ./src/object_detection.o ./src/geometry.o ./src/fileio.o
 	$(CXX) $(CXXFLAGS) $^ -o selfdriving $(LIBS)
 
 

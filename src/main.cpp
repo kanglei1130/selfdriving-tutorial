@@ -28,6 +28,7 @@ string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/t
 
 void cascadeRoutine(const string& folder);
 void geometryRoutine(string command, string address);
+vector<Point> loadConvexHullTestCase(const string& address);
 
 int main( int argc, char** argv ) {
   cout << "Hello Self-Driving Tutorial" << endl;
@@ -151,6 +152,33 @@ void geometryRoutine(string command, string address) {
     inFile.close();
   }
 }
+
+
+void convexHullRoutine(const string& directory) {
+   string address = directory;
+   vector<Point> points = loadConvexHullTestCase(address);
+   // vector<Point> convex = loadConvexHullResult(address);
+
+   vector<Point> hull = Geometry::convexHull(points);
+}
+
+vector<Point> loadConvexHullTestCase(const string& address) {
+  int numPoints = 0;
+  vector<Point> points;
+  ifstream inFile;
+  inFile.open(address);
+  cout << "Test input file: " << address << endl;
+  inFile >> numPoints;
+  for (int i = 0; i < numPoints; i++) {
+    double x, y;
+    inFile >> x;
+    inFile >> y;
+    points.push_back(Point(x, y));
+  }
+  inFile.close();
+  return points;
+}
+
 
 void cascadeRoutine(const string& folder) {
   vector<string> fileNameList = utility::GetFileName(folder);

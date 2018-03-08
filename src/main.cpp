@@ -118,39 +118,11 @@ void geometryRoutine(string command, string address) {
     Geometry::hasOverlap(vertices1, vertices2)? cout << "Yes \n": cout << "No \n"; 
     inFile.close();
     // outFile.close();
-  } else {
-    int numPoints = 0;
-    vector<Point> points;
-    ifstream inFile;
-    inFile.open(address);
-    cout << "Test input file: " << address << endl;
-    // cout << "How many point in total?" << endl;
-    inFile >> numPoints;
-    for (int i = 0; i < numPoints; i++) {
-        double x, y;
-        // cout << "Enter the x coordinate of vertex " << i + 1 << ": ";
-        inFile >> x;
-        // cout << "Enter the y coordinate of vertex " << i + 1 << ": ";
-        inFile >> y;
-        points.push_back(Point(x, y));
-    }
-    vector<Point> hull = Geometry::convexHull(points);
-    if (hull.size() == 0) {
-        cout << "Not possible!" << endl;
-        return;
-    }
-    // ofstream outFile;
-    // address += ".out";
-    // outFile.open(address);
-    cout << "A polygon with " << hull.size() << " vertices is found: " << endl;
-    // outFile << "A polygon with " << hull.size() << " vertices is found: " << endl;
-    for (int i = 0; i < hull.size(); i++) {
-        cout << "(" << hull[i].x << ", " << hull[i].y << ")" << endl;
-        // outFile << "(" << hull[i].x << ", " << hull[i].y << ")" << endl;
-    }
-    // outFile.close();
-    inFile.close();
   }
+}
+
+void pointInPolygonRoutine() {
+
 }
 
 

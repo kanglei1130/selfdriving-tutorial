@@ -149,7 +149,7 @@ bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2) {
 }
 
 // prints convex hull of a set of n points - Javis' Algorithm
-vector<Point> convexHull(vector<Point> points) {
+vector<Point> convexHull_Javis(vector<Point> points) {
     int n = points.size();
     vector<Point> hull;
     if (n < 3) return hull;
@@ -227,6 +227,8 @@ int compare(const void *vp1, const void *vp2) {
 
 // prints convex hull of a set of n points - Graham's Scan Algorithm
 vector<Point> convexHull_Graham(vector<Point> points) {
+    int n = points.size();
+
     // find the bottom-most point
     int ymin = points[0].y, min = 0;
     for (int i = 1; i < n; i++) {
@@ -260,11 +262,12 @@ vector<Point> convexHull_Graham(vector<Point> points) {
         m++; // update size of modified array
     }
  
+    vector<Point> S;
+
     // If modified array of points has less than 3 points,
     // convex hull is not possible
-    if (m < 3) return;
+    if (m < 3) return S;
  
-    vector<Point> S;
     S.push_back(points[0]);
     S.push_back(points[1]);
     S.push_back(points[2]);
@@ -274,7 +277,7 @@ vector<Point> convexHull_Graham(vector<Point> points) {
         // Keep removing top while the angle formed by
         // points next-to-top, top, and points[i] makes
         // a non-left turn
-        while (orientation(nextToTop(S), S.top(), points[i]) != 2)
+        while (orientation(S[S.size()-2], S.back(), points[i]) != 2)
             S.pop_back();
         S.push_back(points[i]);
     }

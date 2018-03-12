@@ -13,7 +13,8 @@
 namespace Geometry {
     bool isInside(vector<Point> polygon, Point p);
     bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2);
-    vector<Point> convexHull(vector<Point> points); 
+    vector<Point> convexHull_Javis(vector<Point> points);
+    vector<Point> convexHull_Graham(vector<Point> points);
 }
 
 #endif /* SRC_GEOMETRY_H_ */

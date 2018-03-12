@@ -27,7 +27,7 @@ string train_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/
 string test_trafficLight_positive = utility::GetCurrentWorkingDir() + "/dataset/test/positive_light/";
 string test_trafficLight_negtive = utility::GetCurrentWorkingDir() + "/dataset/test/negative_light/";
 
-void loadPointPolygonTestCase(const string &address, vector<Point> points1, vector<Point> points2) {
+void loadPointPolygonInputFile(const string &address, vector<Point> points1, vector<Point> points2) {
     int numPoints = 0;
     ifstream inFile;
     inFile.open(address);
@@ -49,6 +49,19 @@ void loadPointPolygonTestCase(const string &address, vector<Point> points1, vect
     inFile.close();
 }
 
+string loadPointPolygonOutputFile(const string &address) {
+    string results = "";
+
+    ifstream inFile;
+    inFile.open(address);
+    cout << "Test output file: " << address << endl;
+    char result;
+    while (inFile >> result)
+        results += string(1, result);
+    return results;
+}
+
+// input / output file have the same format
 void loadConvexHullFile(const string& address, vector<Point> points) {
   int numPoints = 0;
   ifstream inFile;

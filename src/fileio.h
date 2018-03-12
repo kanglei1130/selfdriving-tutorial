@@ -22,9 +22,9 @@ using namespace std;
 
 namespace FileIO {
 
-void loadPointPolygonTestCase(const string &address, vector<Point> points1, vector<Point> points2);
+void loadPointPolygonInputFile(const string &address, vector<Point> points1, vector<Point> points2);
+string loadPointPolygonOutputFile(const string &address);
 void loadConvexHullFile(const string& address, vector<Point> points);
-
 }
 
 #endif /* SRC_FILEIO_H_ */

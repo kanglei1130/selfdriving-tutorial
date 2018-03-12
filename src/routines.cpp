@@ -7,13 +7,17 @@
 
 #include "routines.h"
 #define TEST_MODE 0
+#define ALGORITHM 0  // 0 - Javis'; 1 - Graham's
 
 namespace Routines {
 
 void pointInPolygonRoutine(const string &address) {
     vector<Point> polygon;
     vector<Point> points;
-    FileIO::loadPointPolygonTestCase(address, polygon, points);  // load test cases
+    FileIO::loadPointPolygonInputFile(address, polygon, points);      // load test cases
+    if (TEST_MODE) {
+        string results = FileIO::loadPointPolygonOutputFile(address); // load result file
+    }
     for (int i = 0; i < points.size(); i++) {
         Geometry::isInside(polygon, Point(points[i].x, points[i].y))? cout << "Yes \n": cout << "No \n";
     }
@@ -22,17 +26,30 @@ void pointInPolygonRoutine(const string &address) {
 void polygonOverlapRoutine(const string &address) {
     vector<Point> polygon1;
     vector<Point> polygon2;
-    FileIO::loadPointPolygonTestCase(address, polygon1, polygon2);  // load test cases
+    if (TEST_MODE) {
+        string results = FileIO::loadPointPolygonOutputFile(address); // load result files
+    }
+    FileIO::loadPointPolygonInputFile(address, polygon1, polygon2);   // load test cases
     Geometry::hasOverlap(polygon1, polygon2)? cout << "Yes \n": cout << "No \n"; 
 }
 
 void convexHullRoutine(const string& directory) {
-   string address = directory;
-   vector<Point> points, result;
-   FileIO::loadConvexHullFile(address, points);      // load test cases
-   if (TEST_MODE)
-       FileIO::loadConvexHullFile(address, result);  // load result file 
-   vector<Point> hull = Geometry::convexHull(points);
+    string address = directory;
+    vector<Point> points;
+    FileIO::loadConvexHullFile(address, points);      // load test cases
+    if (TEST_MODE) {
+        vector<Point> result;
+        FileIO::loadConvexHullFile(address, result);  // load result file
+    }
+    if (ALGORITHM == 0) {
+        vector<Point> hull = Geometry::convexHull_Javis(points);
+        if (hull.size() == 0)
+            cout << "Impossible" << endl;
+    } else {
+        vector<Point> hull = Geometry::convexHull_Graham(points);
+        if (hull.size() == 0)
+            cout << "Impossible" << endl;
+    }
 }
 
 void cascadeRoutine(const string &folder) {

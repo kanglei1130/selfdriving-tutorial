@@ -6,14 +6,10 @@
  */
 
 #include "routines.h"
+#define TEST_MODE 0
 
 namespace Routines {
-/* for-loop tests
-  for (int i = 0; i < 11; i++) {
-    string input = "testcases/geometry/test_polygon_polygon_" + to_string(i) + ".txt";
-    geometryRoutine("polygon-polygon", input);
-  }
-*/
+
 void pointInPolygonRoutine(const string &address) {
     vector<Point> polygon;
     vector<Point> points;
@@ -33,8 +29,9 @@ void polygonOverlapRoutine(const string &address) {
 void convexHullRoutine(const string& directory) {
    string address = directory;
    vector<Point> points, result;
-   FileIO::loadConvexHullFile(address, points);  // load test cases
-   // FileIO::loadConvexHullFile(address, result);  // load result file 
+   FileIO::loadConvexHullFile(address, points);      // load test cases
+   if (TEST_MODE)
+       FileIO::loadConvexHullFile(address, result);  // load result file 
    vector<Point> hull = Geometry::convexHull(points);
 }
 

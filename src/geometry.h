@@ -1,8 +1,8 @@
 /*
  * geometry.h
  *
- *  Created on: Feb 28, 2018
- *      Author: lkang
+ * Created on: Feb 28, 2018
+ * Author: lkang
  */
 
 #ifndef SRC_GEOMETRY_H_

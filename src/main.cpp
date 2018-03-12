@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
   // Routines::cascadeRoutine(test_stopSign_positive);
   // Routines::pointInPolygonRoutine("testcases/geometry/test_point_polygon_0.txt");
   // Routines::polygonOverlapRoutine("testcases/geometry/test_polygon_polygon_11.txt");
-  Routines::convexHullRoutine("testcases/geometry/test_convex_hull_0.txt");
+  // Routines::convexHullRoutine("testcases/geometry/test_convex_hull_0.txt");
 
   return 0;
 }

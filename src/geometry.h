@@ -15,6 +15,7 @@ namespace Geometry {
     bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2);
     vector<Point> convexHull_Javis(vector<Point> points);
     vector<Point> convexHull_Graham(vector<Point> points);
+    bool compare_sort(Point p1, Point p2); 
 }
 
 #endif /* SRC_GEOMETRY_H_ */

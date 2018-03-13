@@ -5,50 +5,92 @@
  *  Author: lkang
  */
 
+#include <algorithm>
 #include "routines.h"
+#include "geometry.h"
 #define TEST_MODE 0
 #define ALGORITHM 0  // 0 - Javis'; 1 - Graham's
 
 namespace Routines {
 
+// test whether a point is inside a polygon or not
 void pointInPolygonRoutine(const string &address) {
     vector<Point> polygon;
     vector<Point> points;
+    vector<string> results;  // students' results
     FileIO::loadPointPolygonInputFile(address, polygon, points);      // load test cases
     if (TEST_MODE) {
-        string results = FileIO::loadPointPolygonOutputFile(address); // load result file
+        results = FileIO::loadPointPolygonOutputFile(address);        // load result file
     }
     for (int i = 0; i < points.size(); i++) {
-        Geometry::isInside(polygon, Point(points[i].x, points[i].y))? cout << "Yes \n": cout << "No \n";
+        if (Geometry::isInside(polygon, Point(points[i].x, points[i].y))) {
+            cout << "Sample answer: Yes - (" << points[i].x << ", " << points[i].y << ")" << endl;
+            if (TEST_MODE)
+                (results.size() >= i+1 && results[i] == "Y") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+        } else {
+            cout << "Sample answer: No - (" << points[i].x << ", " << points[i].y << ")" << endl;
+            if (TEST_MODE)
+                (results.size() >= i+1 && results[i] == "N") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+        }
     }
 }
 
+// test whether two polygons overlap or not
 void polygonOverlapRoutine(const string &address) {
     vector<Point> polygon1;
     vector<Point> polygon2;
+    vector<string> result;  // students' results
     if (TEST_MODE) {
-        string results = FileIO::loadPointPolygonOutputFile(address); // load result files
+        result = FileIO::loadPointPolygonOutputFile(address);         // load result files
     }
     FileIO::loadPointPolygonInputFile(address, polygon1, polygon2);   // load test cases
-    Geometry::hasOverlap(polygon1, polygon2)? cout << "Yes \n": cout << "No \n"; 
+    if (Geometry::hasOverlap(polygon1, polygon2)) {
+        cout << "Sample answer: Yes \n";
+        if (TEST_MODE)
+            (result.size() == 1 && result[0] == "Y") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+    } else {
+        cout << "Sample answer: No \n";
+        if (TEST_MODE)
+            (result.size() == 1 && result[0] == "N") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+    }
 }
 
+// construct a convex hull over all given points
 void convexHullRoutine(const string& directory) {
     string address = directory;
     vector<Point> points;
-    FileIO::loadConvexHullFile(address, points);      // load test cases
+    vector<Point> result;
+    vector<Point> hull;
+    FileIO::loadConvexHullFile(address, points);          // load test cases
     if (TEST_MODE) {
-        vector<Point> result;
-        FileIO::loadConvexHullFile(address, result);  // load result file
+        FileIO::loadConvexHullFile(address, result);      // load result file
+        sort(result.begin(), result.end(), Geometry::compare_sort); // sort the hull points
     }
     if (ALGORITHM == 0) {
-        vector<Point> hull = Geometry::convexHull_Javis(points);
-        if (hull.size() == 0)
-            cout << "Impossible" << endl;
+        // Javis' Algorithm
+        hull = Geometry::convexHull_Javis(points);
     } else {
-        vector<Point> hull = Geometry::convexHull_Graham(points);
-        if (hull.size() == 0)
-            cout << "Impossible" << endl;
+        // Graham's Algorithm
+        hull = Geometry::convexHull_Graham(points);
+    }
+    if (hull.size() == 0) {
+        cout << "Sample answer: Impossible" << endl;
+        if (TEST_MODE)
+            (result.size() == 0) ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+    } else {
+        cout << "Sample answer: \n" << hull.size() << "\n";
+        bool isWrong = false;
+        if (hull.size() != result.size())
+            isWrong = true;
+        for (int i = 0; i < hull.size(); i++) {
+            if (!isWrong && hull[i].x != result[i].x && hull[i].y != result[i].y)
+                isWrong = true;
+            cout << hull[i].x << " " << hull[i].y << endl;
+        }
+        if (isWrong)    
+            cout << "Wrong answer!" << endl;
+        else 
+            cout << "Correct answer!" << endl;
     }
 }
 

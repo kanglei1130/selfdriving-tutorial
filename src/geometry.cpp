@@ -1,5 +1,6 @@
 # include <iostream>
 # include <stdlib.h>
+# include <algorithm>
 # include "geometry.h"
 using namespace std;
 
@@ -99,7 +100,7 @@ bool between(double x, double p, double q) {
 }
 
 // returns true if the two polygon has intersection, one with n1 vertices the other with n2
-// this requires that the points in each polygon is in order (clockwise or anticlockwise)
+// Note: this requires that the points in each polygon is in order (clockwise or anticlockwise)
 bool hasOverlap(vector<Point> polygon1, vector<Point> polygon2) {
     // check whether there's vertices of one inside another
     int n1 = polygon1.size();
@@ -187,18 +188,6 @@ vector<Point> convexHull_Javis(vector<Point> points) {
  
     return hull;
 }
-
-// pivot point used in compare function of qsort()
-Point p0;
- 
-// find next to top in a stack
-Point nextToTop(stack<Point> &S) {
-    Point p = S.top();
-    S.pop();
-    Point res = S.top();
-    S.push(p);
-    return res;
-}
  
 // swap two points
 int swap(Point &p1, Point &p2) {
@@ -212,9 +201,12 @@ int distSq(Point p1, Point p2) {
     return (p1.x - p2.x)*(p1.x - p2.x) +
           (p1.y - p2.y)*(p1.y - p2.y);
 }
+
+// global pivot point
+Point p0;
  
 // compare points with respect to the first point
-int compare(const void *vp1, const void *vp2) {
+int compare_qsort(const void *vp1, const void *vp2) {
     Point *p1 = (Point *)vp1;
     Point *p2 = (Point *)vp2;
  
@@ -223,6 +215,11 @@ int compare(const void *vp1, const void *vp2) {
         return (distSq(p0, *p2) >= distSq(p0, *p1))? -1 : 1;
  
     return (o == 2)? -1: 1;
+}
+
+// compare points based on the x-coordinates
+bool compare_sort(Point p1, Point p2) {
+    return (p1.x < p2.x) || (p1.x == p2.x && p1.y < p2.y);
 }
 
 // prints convex hull of a set of n points - Graham's Scan Algorithm
@@ -245,7 +242,7 @@ vector<Point> convexHull_Graham(vector<Point> points) {
     // sort n-1 points with respect to the first point.
     // p1 comes before p2 in sorted ouput if p2 has larger polar angle (in counterclockwise direction) than p1
     p0 = points[0];
-    qsort(&points[1], n-1, sizeof(Point), compare);
+    qsort(&points[1], n-1, sizeof(Point), compare_qsort);
  
     // If two or more points make same angle with p0,
     // Remove all but the one that is farthest from p0
@@ -281,6 +278,9 @@ vector<Point> convexHull_Graham(vector<Point> points) {
             S.pop_back();
         S.push_back(points[i]);
     }
+    
+    // sort the result based on x-coordinates in ascending order
+    sort(S.begin(), S.end(), compare_sort);
     return S; 
 }
 

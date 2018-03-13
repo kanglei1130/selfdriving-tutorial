@@ -7,12 +7,12 @@ using namespace std;
 
 int main(int argc, char** argv) {
   cout << "Hello Self-Driving Tutorial" << endl;
-  cout << "OpenCV Version: " << CV_VERSION << endl;
+  cout << "OpenCV Version: " << CV_VERSION << endl << endl;
 
-  // Routines::cascadeRoutine(); // stop sign
-  Routines::pointInPolygonRoutine();
-  Routines::polygonOverlapRoutine();
-  Routines::convexHullRoutine();
+  // Routines::cascadeRoutine();           // stop sign detection
+  Routines::pointInPolygonRoutine();    // point in polygon detection
+  Routines::polygonOverlapRoutine();    // polygon overlap detection
+  Routines::convexHullRoutine();        // convex hull construction
 
   return 0;
 }

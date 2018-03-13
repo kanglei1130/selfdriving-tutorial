@@ -23,10 +23,10 @@ using namespace std;
 
 namespace Routines {
 
-void cascadeRoutine(const string &folder);
-void pointInPolygonRoutine(const string &address);
-void polygonOverlapRoutine(const string &address);
-void convexHullRoutine(const string &address);
+void cascadeRoutine();
+void pointInPolygonRoutine();
+void polygonOverlapRoutine();
+void convexHullRoutine();
 }
 
 #endif /* SRC_ROUTINES_H_ */

@@ -5,48 +5,8 @@
  *      Author: lkang
  */
 #include "utility.h"
-#include "dirent.h"
 
 namespace utility {
-
-vector<string> GetFileName(string directory){
-	DIR *dir;
-	struct dirent *ent;
-	vector<string> nameList;
-	if ((dir = opendir (directory.c_str())) != NULL) {
-	  /* print all the files and directories within directory */
-
-	  while ((ent = readdir (dir)) != NULL) {
-	    //printf ("%s\n", ent->d_name);
-		nameList.push_back(ent->d_name);
-	  }
-	  return nameList;
-	  closedir (dir);
-	} else {
-	  /* could not open directory */
-	  perror ("");
-	}
-}
-
-//get the local file path
-std::string GetCurrentWorkingDir() {
-  char buff[FILENAME_MAX];
-  GetCurrentDir( buff, FILENAME_MAX );
-  std::string current_working_dir(buff);
-  return current_working_dir;
-}
-
-//creat a new directory with name file_path
-void creatDir(string file_path){
-	std::string dir = "mkdir -p " + GetCurrentWorkingDir() + file_path;
-	const int dir_err = system(dir.c_str());
-	if (-1 == dir_err)
-	{
-	    printf("Error creating directory!n");
-	    exit(1);
-	}
-}
-
 
 int getRandomNumber() {
   return uint_dist100(randomNumberGenerator);
@@ -172,8 +132,4 @@ Scalar getMSSIM( const Mat& i1, const Mat& i2)
  return mssim;
 }
 
-
 }
-
-
-

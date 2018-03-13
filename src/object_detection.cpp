@@ -6,8 +6,8 @@
  */
 
 #include "object_detection.h"
-
 #include "utility.h"
+#include "fileio.h"
 
 namespace ObjectDetection {
 
@@ -46,7 +46,7 @@ bool detectObjCascade(const string& model_file, const string& folder, const stri
 
   draw_locations(targetImage, stop_sign_found, Scalar(0, 0, 255), "Stop Sign");
 
-  string output_address = utility::GetCurrentWorkingDir() + "/output/" + file;
+  string output_address = FileIO::GetCurrentWorkingDir() + "/output/" + file;
   imwrite(output_address, targetImage);
   cout << "Output image to:" << output_address << endl;
   return stop_sign_found.size() > 0;
@@ -137,8 +137,8 @@ void detectStopSignMSE(string model_address,string obj_address, string filename)
     // show the image
     imshow("image", targetImage);
     waitKey(200);
-    utility::creatDir("/obj_detect_output_MSE");
-    string output_address = utility::GetCurrentWorkingDir() + "/obj_detect_output_MSE/output" + filename;
+    FileIO::creatDir("/obj_detect_output_MSE");
+    string output_address = FileIO::GetCurrentWorkingDir() + "/obj_detect_output_MSE/output" + filename;
     imwrite(output_address, targetImage);
     cout << "Detected Images Locate: " << output_address << endl;
 }

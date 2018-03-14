@@ -185,6 +185,14 @@ vector<Point> convexHull_Javis(vector<Point> points) {
         // set p as q for next iteration
         p = q;
     } while (p != l);  // while we don't come back to first point
+
+    for (int i = 0; i < hull.size(); i++) {
+        if (orientation(hull[i], hull[(i+1)%hull.size()], hull[(i+2)%hull.size()]) == 0)
+            hull.erase(hull.begin() + (i+1)%hull.size());
+    }
+
+    // sort the result based on x-coordinates in ascending order
+    sort(hull.begin(), hull.end(), compare_sort);
  
     return hull;
 }

@@ -9,7 +9,7 @@
 #include "routines.h"
 #include "geometry.h"
 #define TEST_MODE 0
-#define ALGORITHM 0  // 0 - Javis'; 1 - Graham's
+#define ALGORITHM 1  // 0 - Javis'; 1 - Graham's
 
 namespace Routines {
 
@@ -37,6 +37,11 @@ string test_point_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometr
 string test_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_polygon_polygon/";
 string test_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_convex_hull/";
 
+// student output file directories
+string student_output_point_polygon = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/point-polygon/";
+string student_output_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/polygon-polygon/";
+string student_output_convex_hull = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/convex-hull/";
+
 // test whether a point is inside a polygon or not
 void pointInPolygonRoutine() {
     vector<string> fileNameList = FileIO::GetFileName(test_point_polygon);
@@ -46,13 +51,13 @@ void pointInPolygonRoutine() {
         vector<Point> polygon;
         vector<Point> points;
         vector<string> results;
-        FileIO::loadPointPolygonInputFile(file, polygon, points);      // load test case
+        FileIO::loadPointPolygonInputFile(file, polygon, points); // load test case
         cout << "The polygon: ";
         for (int k = 0; k < polygon.size(); k++)
             cout << "(" << polygon[k].x << ", " << polygon[k].y << ") ";
         cout << endl;
         if (TEST_MODE) {
-            results = FileIO::loadPointPolygonOutputFile(file);        // load result file
+            results = FileIO::loadPointPolygonOutputFile(student_output_point_polygon); // load result file
         }
         for (int i = 0; i < points.size(); i++) {
             if (Geometry::isInside(polygon, Point(points[i].x, points[i].y))) {
@@ -79,9 +84,9 @@ void polygonOverlapRoutine() {
         vector<string> result;
         string address = test_polygon_polygon + fileNameList[i];
         if (TEST_MODE) {
-            result = FileIO::loadPointPolygonOutputFile(address);         // load result files
+            result = FileIO::loadPointPolygonOutputFile(student_output_polygon_polygon); // load result files
         }
-        FileIO::loadPointPolygonInputFile(address, polygon1, polygon2);   // load test cases
+        FileIO::loadPointPolygonInputFile(address, polygon1, polygon2); // load test cases
         cout << "Polygon 1: ";
         for (int k = 0; k < polygon1.size(); k++)
             cout << "(" << polygon1[k].x << ", " << polygon1[k].y << ") ";
@@ -112,13 +117,13 @@ void convexHullRoutine() {
         vector<Point> points;
         vector<Point> result;
         vector<Point> hull;
-        FileIO::loadConvexHullFile(address, points);          // load test cases
+        FileIO::loadConvexHullFile(address, points); // load test cases
         cout << "All points: ";
         for (int k = 0; k < points.size(); k++)
             cout << "(" << points[k].x << ", " << points[k].y << ") ";
         cout << endl;
         if (TEST_MODE) {
-            FileIO::loadConvexHullFile(address, result);      // load result file
+            FileIO::loadConvexHullFile(student_output_convex_hull, result); // load result file
             sort(result.begin(), result.end(), Geometry::compare_sort); // sort the hull points
         }
         if (ALGORITHM == 0) {

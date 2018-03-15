@@ -8,7 +8,9 @@
 #include <algorithm>
 #include "routines.h"
 #include "geometry.h"
-#define TEST_MODE 0
+
+#define TEST_MODE 1  //
+
 #define ALGORITHM 1  // 0 - Javis'; 1 - Graham's
 
 namespace Routines {
@@ -37,10 +39,10 @@ string test_point_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometr
 string test_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_polygon_polygon/";
 string test_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_convex_hull/";
 
-// student output file directories
-string student_output_point_polygon = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/point-polygon/";
-string student_output_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/polygon-polygon/";
-string student_output_convex_hull = FileIO::GetCurrentWorkingDir() + "/putYourOutputHere/convex-hull/";
+// sample answer file directories
+string sample_answer_point_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_point_polygon/";
+string sample_answer_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_polygon_polygon/";
+string sample_answer_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_convex_hull/";
 
 // test whether a point is inside a polygon or not
 void pointInPolygonRoutine() {
@@ -57,7 +59,8 @@ void pointInPolygonRoutine() {
             cout << "(" << polygon[k].x << ", " << polygon[k].y << ") ";
         cout << endl;
         if (TEST_MODE) {
-            results = FileIO::loadPointPolygonOutputFile(student_output_point_polygon); // load result file
+            file = sample_answer_point_polygon + fileNameList[j];
+            results = FileIO::loadPointPolygonOutputFile(file); // load result file
         }
         for (int i = 0; i < points.size(); i++) {
             if (Geometry::isInside(polygon, Point(points[i].x, points[i].y))) {
@@ -84,7 +87,8 @@ void polygonOverlapRoutine() {
         vector<string> result;
         string address = test_polygon_polygon + fileNameList[i];
         if (TEST_MODE) {
-            result = FileIO::loadPointPolygonOutputFile(student_output_polygon_polygon); // load result files
+            string file = sample_answer_polygon_polygon + fileNameList[i];
+            result = FileIO::loadPointPolygonOutputFile(file); // load result file
         }
         FileIO::loadPointPolygonInputFile(address, polygon1, polygon2); // load test cases
         cout << "Polygon 1: ";
@@ -109,7 +113,8 @@ void polygonOverlapRoutine() {
 }
 
 // construct a convex hull over all given points
-void convexHullRoutine() {
+// void convexHullRoutine(Points (*convexHull)(Points)) {
+void convexHullRoutine(const function<Points(Points)>& convexHull) {
     vector<string> fileNameList = FileIO::GetFileName(test_convex_hull);
     for (int i = 0; i < (int)fileNameList.size(); i++) {
         cout << "========== Convex-Hull Test #" << i << " ==========" << endl;
@@ -123,15 +128,17 @@ void convexHullRoutine() {
             cout << "(" << points[k].x << ", " << points[k].y << ") ";
         cout << endl;
         if (TEST_MODE) {
-            FileIO::loadConvexHullFile(student_output_convex_hull, result); // load result file
+            string file = sample_answer_convex_hull + fileNameList[i];
+            FileIO::loadConvexHullFile(file, result); // load sample answer
             sort(result.begin(), result.end(), Geometry::compare_sort); // sort the hull points
         }
         if (ALGORITHM == 0) {
             // Javis' Algorithm
             hull = Geometry::convexHull_Javis(points);
         } else {
+            hull = convexHull(points);
             // Graham's Algorithm
-            hull = Geometry::convexHull_Graham(points);
+            // hull = Geometry::convexHull_Graham(points);
         }
         if (hull.size() == 0) {
             cout << "Sample answer: Impossible" << endl;

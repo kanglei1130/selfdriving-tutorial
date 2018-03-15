@@ -21,12 +21,17 @@
 
 using namespace std;
 
+using Points = vector<Point>;
+
 namespace Routines {
 
 void cascadeRoutine();
 void pointInPolygonRoutine();
 void polygonOverlapRoutine();
-void convexHullRoutine();
+void convexHullRoutine(const function<Points(Points)>& convexHull);
+
+//void convexHullRoutine(Points (*convexHull)(Points));
+
 }
 
 #endif /* SRC_ROUTINES_H_ */

@@ -15,7 +15,7 @@ OTHERLIBS =
 
 LIBS = $(CVLIBS) $(OTHERLIBS)
 
-selfdriving: ./src/fileio.o ./src/main.o ./src/utility.o ./src/object_detection.o ./src/geometry.o ./src/routines.o
+selfdriving: ./src/main.o ./src/fileio.o ./src/utility.o ./src/object_detection.o ./src/geometry.o ./src/routines.o
 	$(CXX) $(CXXFLAGS) $^ -o selfdriving $(LIBS)
 
 $(BUILD_DIR)%.o: ./src/%.cpp ./src/%.h

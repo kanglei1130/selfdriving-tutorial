@@ -8,9 +8,9 @@
 #include <algorithm>
 #include "routines.h"
 #include "geometry.h"
+#include <fstream>
 
-#define TEST_MODE 1  //
-
+#define TEST_MODE 1  // 1 - test your answer; 0 - sample answer
 #define ALGORITHM 1  // 0 - Javis'; 1 - Graham's
 
 namespace Routines {
@@ -40,57 +40,75 @@ string test_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geome
 string test_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_convex_hull/";
 
 // sample answer file directories
-string sample_answer_point_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_point_polygon/";
-string sample_answer_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_polygon_polygon/";
-string sample_answer_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/test_convex_hull/";
+string sample_answer_point_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/sample_outputs/test_point_polygon/";
+string sample_answer_polygon_polygon = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/sample_outputs/test_polygon_polygon/";
+string sample_answer_convex_hull = FileIO::GetCurrentWorkingDir() + "/testcases/geometry/sample_outputs/test_convex_hull/";
 
 // test whether a point is inside a polygon or not
-void pointInPolygonRoutine() {
+void pointInPolygonRoutine(bool (*point_in_polygon)(Points, Point)) {
     vector<string> fileNameList = FileIO::GetFileName(test_point_polygon);
-    for (int j = 0; j < (int)fileNameList.size(); j++) {
+    int numPass = 0;
+    int numTest = (int)fileNameList.size();
+
+    for (int j = 0; j < numTest; j++) {
         cout << "========== Point-In-Polygon Test #" << j << " ==========" << endl;
         string file = test_point_polygon + fileNameList[j];
         vector<Point> polygon;
         vector<Point> points;
-        vector<string> results;
+        vector<int> results;
         FileIO::loadPointPolygonInputFile(file, polygon, points); // load test case
+        file = sample_answer_point_polygon + fileNameList[j];
+        results = FileIO::loadPointPolygonOutputFile(file);       // load sample answer
+
         cout << "The polygon: ";
         for (int k = 0; k < polygon.size(); k++)
             cout << "(" << polygon[k].x << ", " << polygon[k].y << ") ";
         cout << endl;
-        if (TEST_MODE) {
-            file = sample_answer_point_polygon + fileNameList[j];
-            results = FileIO::loadPointPolygonOutputFile(file); // load result file
-        }
+
+        bool isCorrect;
         for (int i = 0; i < points.size(); i++) {
-            if (Geometry::isInside(polygon, Point(points[i].x, points[i].y))) {
-                cout << "Sample answer: Yes - (" << points[i].x << ", " << points[i].y << ")" << endl;
-                if (TEST_MODE)
-                    (results.size() >= i+1 && results[i] == "Y") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
-            } else {
-                cout << "Sample answer: No - (" << points[i].x << ", " << points[i].y << ")" << endl;
-                if (TEST_MODE)
-                    (results.size() >= i+1 && results[i] == "N") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+            isCorrect = true;
+            cout << "Point (" << points[i].x << ", " << points[i].y << "): ";
+            if (results[i] == 0)
+                cout << "Sample answer - NO";
+            else
+                cout << "Sample answer - YES";
+            if (TEST_MODE) {
+                bool studentAnswer = point_in_polygon(polygon, Point(points[i].x, points[i].y));
+                if ((studentAnswer && results[i] == 1) || (!studentAnswer && results[i] == 0))
+                    cout << " [Correct]";
+                else {
+                    cout << " [Wrong]";
+                    isCorrect = false;
+                }
             }
+            cout << endl;
         }
+        if (isCorrect) numPass++;
         cout << endl;
     }
+
+    if (TEST_MODE) 
+        cout << "========== Overall performance: " << numPass << " / " << numTest << " passed! ==========" << endl;
+    cout << endl;
 }
 
 // test whether two polygons overlap or not
-void polygonOverlapRoutine() {
+void polygonOverlapRoutine(bool (*polygon_overlap)(Points, Points)) {
     vector<string> fileNameList = FileIO::GetFileName(test_polygon_polygon);
-    for (int i = 0; i < (int)fileNameList.size(); i++) {
+    int numPass = 0;
+    int numTest = (int) fileNameList.size();
+
+    for (int i = 0; i < numTest; i++) {
         cout << "========== Polygon-Overlap Test #" << i << " ==========" << endl; 
         vector<Point> polygon1;
         vector<Point> polygon2;
-        vector<string> result;
+        vector<int> result;
         string address = test_polygon_polygon + fileNameList[i];
-        if (TEST_MODE) {
-            string file = sample_answer_polygon_polygon + fileNameList[i];
-            result = FileIO::loadPointPolygonOutputFile(file); // load result file
-        }
+        string file = sample_answer_polygon_polygon + fileNameList[i];
+        result = FileIO::loadPointPolygonOutputFile(file);              // load result file
         FileIO::loadPointPolygonInputFile(address, polygon1, polygon2); // load test cases
+
         cout << "Polygon 1: ";
         for (int k = 0; k < polygon1.size(); k++)
             cout << "(" << polygon1[k].x << ", " << polygon1[k].y << ") ";
@@ -99,104 +117,138 @@ void polygonOverlapRoutine() {
         for (int k = 0; k < polygon2.size(); k++)
             cout << "(" << polygon2[k].x << ", " << polygon2[k].y << ") ";
         cout << endl;
-        if (Geometry::hasOverlap(polygon1, polygon2)) {
-            cout << "Sample answer: Yes \n";
-            if (TEST_MODE)
-                (result.size() == 1 && result[0] == "Y") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+
+        if (result[0] == 0) {
+            cout << "Sample answer: NO \n";
+            if (TEST_MODE) {
+                if (polygon_overlap(polygon1, polygon2)) {
+                    cout << "Wrong answer!\n";
+                } else {
+                    cout << "Correct answer!\n";
+                    numPass++;
+                }
+            }
         } else {
-            cout << "Sample answer: No \n";
-            if (TEST_MODE)
-                (result.size() == 1 && result[0] == "N") ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
-        }
+            cout << "Sample answer: YES \n";
+            if (TEST_MODE) {
+                if (polygon_overlap(polygon1, polygon2)) {
+                    cout << "Correct answer!\n";
+                    numPass++;
+                } else
+                    cout << "Wrong answer!\n";
+            }
+        } 
         cout << endl;
     }
+    
+    if (TEST_MODE)
+        cout << "========== Overall performance: " << numPass << " / " << numTest << " passed! ==========" << endl;
+    cout << endl;
 }
 
 // construct a convex hull over all given points
-// void convexHullRoutine(Points (*convexHull)(Points)) {
-void convexHullRoutine(const function<Points(Points)>& convexHull) {
+void convexHullRoutine(Points (*convex_hull)(Points)) {
+    int numPass = 0;
     vector<string> fileNameList = FileIO::GetFileName(test_convex_hull);
-    for (int i = 0; i < (int)fileNameList.size(); i++) {
+    int numTest = (int) fileNameList.size();
+    for (int i = 0; i < numTest; i++) {
         cout << "========== Convex-Hull Test #" << i << " ==========" << endl;
         string address = test_convex_hull + fileNameList[i];
         vector<Point> points;
         vector<Point> result;
         vector<Point> hull;
+        
         FileIO::loadConvexHullFile(address, points); // load test cases
+        string file = sample_answer_convex_hull + fileNameList[i];
+        FileIO::loadConvexHullFile(file, result);    // load sample answer
+
         cout << "All points: ";
         for (int k = 0; k < points.size(); k++)
             cout << "(" << points[k].x << ", " << points[k].y << ") ";
         cout << endl;
-        if (TEST_MODE) {
-            string file = sample_answer_convex_hull + fileNameList[i];
-            FileIO::loadConvexHullFile(file, result); // load sample answer
-            sort(result.begin(), result.end(), Geometry::compare_sort); // sort the hull points
+        
+        if (!TEST_MODE) {
+            if (result.size() == 0)
+                cout << "Sample answer: Impossible" << endl;
+            else {
+                cout << "Sample answer - the convex hull: ";
+                for (int j = 0; j < result.size(); j++)
+                    cout << "(" << result[j].x << ", " << result[j].y << ") ";
+                cout << endl;
+            }
+            cout << endl;
+            continue;
         }
-        if (ALGORITHM == 0) {
-            // Javis' Algorithm
-            hull = Geometry::convexHull_Javis(points);
-        } else {
-            hull = convexHull(points);
-            // Graham's Algorithm
-            // hull = Geometry::convexHull_Graham(points);
-        }
-        if (hull.size() == 0) {
-            cout << "Sample answer: Impossible" << endl;
-            if (TEST_MODE)
-                (result.size() == 0) ? cout << "Correct answer!\n" : cout << "Wrong answer!\n";
+
+        hull = convex_hull(points);                             // student's answer
+        sort(hull.begin(), hull.end(), Geometry::compare_sort); // sort the hull points
+        
+        if (result.size() == 0) {
+            if (hull.size() == 0) {
+                cout << "Correct answer!\n";
+                numPass++;
+            } else
+                cout << "Wrong answer!\n";
         } else {
             bool isWrong = false;
             if (hull.size() != result.size())
                 isWrong = true;
-            cout << "The convex hull: ";
             for (int i = 0; i < hull.size(); i++) {
-                if (TEST_MODE && !isWrong && hull[i].x != result[i].x && hull[i].y != result[i].y)
+                if (!isWrong && hull[i].x != result[i].x && hull[i].y != result[i].y)
                     isWrong = true;
                 cout << "(" << hull[i].x << ", " << hull[i].y << ") ";
             }
             cout << endl;
-            if (TEST_MODE && isWrong)    
+            if (isWrong)
                 cout << "Wrong answer!" << endl;
-            else if (TEST_MODE)
+            else {
+                numPass++;
                 cout << "Correct answer!" << endl;
+            }
         }
         cout << endl;
     }
+
+    if (TEST_MODE)
+        cout << "========== Overall performance: " << numPass << " / " << numTest << " passed! ==========" << endl;
+    cout << endl;
 }
 
 void cascadeRoutine() {
-  string folder = test_stopSign_positive;
-  vector<string> fileNameList = FileIO::GetFileName(folder);
-  int cnt = 0;
-  /* Advanced method (cascade) to detect objects */
-  string model = FileIO::GetCurrentWorkingDir() + "/params/cascade.xml";
-  for (int i = 0; i < (int)fileNameList.size(); i++){
-    cout<<fileNameList[i]<<endl;
-    string file = fileNameList[i];
-    cnt += ObjectDetection::detectObjCascade(model, folder, file);
-  }
-  cout<< cnt << " objects are detected in "<<fileNameList.size()<<" files"<<endl;
+    string folder = test_stopSign_positive;
+    vector<string> fileNameList = FileIO::GetFileName(folder);
+    int cnt = 0;
+ 
+    /* Advanced method (cascade) to detect objects */
+    string model = FileIO::GetCurrentWorkingDir() + "/params/cascade.xml";
+    for (int i = 0; i < (int)fileNameList.size(); i++) {
+        cout << fileNameList[i] << endl;
+        string file = fileNameList[i];
+        cnt += ObjectDetection::detectObjCascade(model, folder, file);
+    }
+    cout<< cnt << " objects are detected in "<<fileNameList.size()<<" files"<<endl;
 }
 
 void processVideo() {
-  VideoCapture cap("/home/lkang/Desktop/video.h264"); // open the default camera
-  string output{"/home/lkang/Desktop/images/"};
-  if(!cap.isOpened()) { // check if we succeeded
-    cout<<"not able to open"<<endl;
-    return;
-  }
-  Mat gray;
-  for (;;) {
-    Mat frame;
-    cap >> frame; // get a new frame from camera
-    if(frame.empty()) break;
+    VideoCapture cap("/home/lkang/Desktop/video.h264"); // open the default camera
+    string output{"/home/lkang/Desktop/images/"};
+    if(!cap.isOpened()) { // check if we succeeded
+        cout << "not able to open" << endl;
+        return;
+    }
+  
+    Mat gray;
+    for (;;) {
+        Mat frame;
+        cap >> frame; // get a new frame from camera
+        if(frame.empty()) break;
 
-    // int num = processImage(frame, gray);
-    // imshow("gray", frame);
-    // waitKey(0);
-    // sleep(1);
-    // cv::imwrite(output + to_string(counter) + ".png", frame);
-  }
+        // int num = processImage(frame, gray);
+        // imshow("gray", frame);
+        // waitKey(0);
+        // sleep(1);
+        // cv::imwrite(output + to_string(counter) + ".png", frame);
+    }
 }
 
 }

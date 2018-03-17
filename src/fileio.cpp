@@ -33,15 +33,21 @@ void loadPointPolygonInputFile(const string &address, vector<Point> &points1, ve
     inFile.close();
 }
 
-vector<string> loadPointPolygonOutputFile(const string &address) {
-    vector<string> results;
+vector<int> loadPointPolygonOutputFile(const string &address) {
+    vector<int> results;
+    int num = 0;
 
     ifstream inFile;
     inFile.open(address);
-    cout << "Test output file: " << address << endl;
-    string result;
-    while (inFile >> result)
-        results.push_back(result);
+    cout << "Sample answer file: " << address << endl;
+    
+    inFile >> num;
+    int tmp;
+    for (int i = 0; i < num; i++) {
+        inFile >> tmp;
+        results.push_back(tmp);
+    }
+    inFile.close();
     return results;
 }
 

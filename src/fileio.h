@@ -23,7 +23,7 @@ using namespace std;
 namespace FileIO {
 
 void loadPointPolygonInputFile(const string &address, vector<Point> &points1, vector<Point> &points2);
-vector<string> loadPointPolygonOutputFile(const string &address);
+vector<int> loadPointPolygonOutputFile(const string &address);
 void loadConvexHullFile(const string& address, vector<Point> &points);
 
 vector<string> GetFileName(string directory);

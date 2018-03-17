@@ -26,12 +26,10 @@ using Points = vector<Point>;
 namespace Routines {
 
 void cascadeRoutine();
-void pointInPolygonRoutine();
-void polygonOverlapRoutine();
-void convexHullRoutine(const function<Points(Points)>& convexHull);
-
-//void convexHullRoutine(Points (*convexHull)(Points));
-
+void pointInPolygonRoutine(bool (*pointInPolygon)(Points, Point));
+void polygonOverlapRoutine(bool (*polygonOverlap)(Points, Points));
+void convexHullRoutine(Points (*convexHull)(Points));
+// void convexHullRoutine(const function<Points(Points)>& convexHull);
 }
 
 #endif /* SRC_ROUTINES_H_ */

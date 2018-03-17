@@ -5,22 +5,30 @@
 using namespace cv;
 using namespace std;
 
-Points convexHull(Points points);
+bool point_in_polygon(Points polygon, Point p);
+bool polygon_overlap(Points polygon1, Points polygon2);
+Points convex_hull(Points points);
 
 int main(int argc, char** argv) {
   cout << "Hello Self-Driving Tutorial" << endl;
   cout << "OpenCV Version: " << CV_VERSION << endl << endl;
 
   // Routines::cascadeRoutine();           // stop sign detection
-  // Routines::pointInPolygonRoutine();    // point in polygon detection
-
-  // Routines::polygonOverlapRoutine();    // polygon overlap detection
-
-  // Routines::convexHullRoutine(convex);        // convex hull construction
+  Routines::pointInPolygonRoutine(point_in_polygon); // point in polygon detection
+  Routines::polygonOverlapRoutine(polygon_overlap);  // polygon overlap detection
+  Routines::convexHullRoutine(convex_hull);          // convex hull construction
 
   return 0;
 }
 
-vector<Point> convexHull(vector<Point> points) {
-  return points;
+bool point_in_polygon(Points polygon, Point p) {
+    return Geometry::isInside(polygon, p);
+}
+
+bool polygon_overlap(Points polygon1, Points polygon2) {
+    return Geometry::hasOverlap(polygon1, polygon2);
+}
+
+Points convex_hull(Points points) {
+    return Geometry::convexHull_Javis(points);
 }

@@ -21,14 +21,33 @@ int main(int argc, char** argv) {
   return 0;
 }
 
+/*
+ * Parameter: vector<Point> polygon, Point p;
+ * Return: false if p is outside the polygon, true otherwise;
+ */
 bool point_in_polygon(Points polygon, Point p) {
+    // write your code here
+    // ... ...
     return Geometry::isInside(polygon, p);
 }
 
+/*
+ * Parameter: vector<Point> polygon1, vector<Point> polygon2;
+ * Return: false if there's no overlap between the two polygons, true otherwise;
+ */
 bool polygon_overlap(Points polygon1, Points polygon2) {
+    // write your code here
+    // ... ...
     return Geometry::hasOverlap(polygon1, polygon2);
 }
 
+/*
+ * Parameter: vector<Point> points;
+ * Return: vector<Point> convex_hull if there's a convex hull that can completely cover all points;
+ *         return an empty vector<Point> convex_hull if impossible;
+ */
 Points convex_hull(Points points) {
+    // write yoru code here
+    // ... ...
     return Geometry::convexHull_Javis(points);
 }

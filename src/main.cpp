@@ -16,7 +16,9 @@ int main(int argc, char** argv) {
   // Routines::cascadeRoutine();           // stop sign detection
   Routines::pointInPolygonRoutine(point_in_polygon); // point in polygon detection
   Routines::polygonOverlapRoutine(polygon_overlap);  // polygon overlap detection
-  Routines::convexHullRoutine(convex_hull);          // convex hull construction
+  // Routines::convexHullRoutine(convex_hull);          // convex hull construction
+  function<Points(Points)> convexHull = convex_hull;
+  Routines::testConvexHullRoutine(convexHull); 
 
   return 0;
 }

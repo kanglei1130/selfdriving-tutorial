@@ -29,7 +29,9 @@ void cascadeRoutine();
 void pointInPolygonRoutine(bool (*pointInPolygon)(Points, Point));
 void polygonOverlapRoutine(bool (*polygonOverlap)(Points, Points));
 void convexHullRoutine(Points (*convexHull)(Points));
-// void convexHullRoutine(const function<Points(Points)>& convexHull);
+
+void testConvexHullRoutine(const function<Points(Points)>& convexHull);
+
 }
 
 #endif /* SRC_ROUTINES_H_ */

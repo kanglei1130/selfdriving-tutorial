@@ -251,4 +251,73 @@ void processVideo() {
     }
 }
 
+// construct a convex hull over all given points
+void testConvexHullRoutine(const function<Points(Points)>& convex_hull) {
+    int numPass = 0;
+    vector<string> fileNameList = FileIO::GetFileName(test_convex_hull);
+    int numTest = (int) fileNameList.size();
+    for (int i = 0; i < numTest; i++) {
+        cout << "========== Convex-Hull Test #" << i << " ==========" << endl;
+        string address = test_convex_hull + fileNameList[i];
+        vector<Point> points;
+        vector<Point> result;
+        vector<Point> hull;
+        
+        FileIO::loadConvexHullFile(address, points); // load test cases
+        string file = sample_answer_convex_hull + fileNameList[i];
+        FileIO::loadConvexHullFile(file, result);    // load sample answer
+
+        cout << "All points: ";
+        for (int k = 0; k < points.size(); k++)
+            cout << "(" << points[k].x << ", " << points[k].y << ") ";
+        cout << endl;
+        
+        if (!TEST_MODE) {
+            if (result.size() == 0)
+                cout << "Sample answer: Impossible" << endl;
+            else {
+                cout << "Sample answer - the convex hull: ";
+                for (int j = 0; j < result.size(); j++)
+                    cout << "(" << result[j].x << ", " << result[j].y << ") ";
+                cout << endl;
+            }
+            cout << endl;
+            continue;
+        }
+
+        hull = convex_hull(points);                             // student's answer
+        sort(hull.begin(), hull.end(), Geometry::compare_sort); // sort the hull points
+        
+        if (result.size() == 0) {
+            if (hull.size() == 0) {
+                cout << "Correct answer!\n";
+                numPass++;
+            } else
+                cout << "Wrong answer!\n";
+        } else {
+            bool isWrong = false;
+            if (hull.size() != result.size())
+                isWrong = true;
+            for (int i = 0; i < hull.size(); i++) {
+                if (!isWrong && hull[i].x != result[i].x && hull[i].y != result[i].y)
+                    isWrong = true;
+                cout << "(" << hull[i].x << ", " << hull[i].y << ") ";
+            }
+            cout << endl;
+            if (isWrong)
+                cout << "Wrong answer!" << endl;
+            else {
+                numPass++;
+                cout << "Correct answer!" << endl;
+            }
+        }
+        cout << endl;
+    }
+
+    if (TEST_MODE)
+        cout << "========== Overall performance: " << numPass << " / " << numTest << " passed! ==========" << endl;
+    cout << endl;
+}
+
+
 }
